@@ -118,11 +118,16 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
         }
     }
 
-    protected TodoItem findById(int itemId) {
+    @Override
+    public TodoItem findById(int itemId) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            db.setMaximumSize(1);
-            Cursor cursor = db.rawQuery(buildSelectByIdSql(itemId), null);
+            System.out.println("finding " + itemId);
+            Cursor cursor = db.query(TODO_TABLENAME, new String[]{KEY_ID, KEY_BODY, KEY_PRIORITY},
+                    KEY_ID + "= ?", new String[]{String.valueOf(itemId)}, null, null, null, null); // GROUP BY, HAVING, ORDER BY
+            if (cursor != null)
+                cursor.moveToFirst();
+
             return convertTo(cursor);
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,13 +138,25 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
         return null;
     }
 
-    protected String buildSelectByIdSql(int id) {
-        StringBuilder sqlBuilder = new StringBuilder("SELECT ").append(KEY_ID).append(",")
-                .append(KEY_BODY).append(",").append(KEY_PRIORITY).append(" FROM ").append(TODO_TABLENAME)
-                .append(" WHERE id = ").append(id);
-
-        return sqlBuilder.toString();
+    @Override
+    public void save(TodoItem todoItem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            updateTodoItem(todoItem, db);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            CommonUtils.closeConnection(db);
+        }
     }
+
+//    protected String buildSelectByIdSql(int id) {
+//        StringBuilder sqlBuilder = new StringBuilder("SELECT ").append(KEY_ID).append(",")
+//                .append(KEY_BODY).append(",").append(KEY_PRIORITY).append(" FROM ").append(TODO_TABLENAME)
+//                .append(" WHERE id = ").append(id);
+//
+//        return sqlBuilder.toString();
+//    }
 
     /**
      * convert db cursor to POJO expect the row in the following order
