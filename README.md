@@ -1,4 +1,4 @@
 android-todo-app
 ================
 
-sample android todo app
+Android Prework sample ToDo app
