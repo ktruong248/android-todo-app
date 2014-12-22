@@ -88,21 +88,33 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
                             fetched.setBody(item.getBody());
                             fetched.setPriority(item.getPriority());
                             updateTodoItem(fetched, db);
-                        }else{
+                        } else {
                             // need to create
                             item.setId(null);
                             insert(item, db);
                         }
-                    }else {
+                    } else {
                         insert(item, db);
                     }
                 }
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 db.endTransaction();
                 CommonUtils.closeConnection(db);
             }
+        }
+    }
+
+    @Override
+    public void delete(TodoItem removeItem) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            deleteTodoItem(removeItem, db);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            CommonUtils.closeConnection(db);
         }
     }
 
@@ -123,7 +135,7 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
 
     protected String buildSelectByIdSql(int id) {
         StringBuilder sqlBuilder = new StringBuilder("SELECT ").append(KEY_ID).append(",")
-                .append(KEY_BODY).append(",").append(KEY_PRIORITY).append(",").append(" FROM ").append(TODO_TABLENAME)
+                .append(KEY_BODY).append(",").append(KEY_PRIORITY).append(" FROM ").append(TODO_TABLENAME)
                 .append(" WHERE id = ").append(id);
 
         return sqlBuilder.toString();
@@ -172,7 +184,7 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
 
     protected String buildSelectAllSql() {
         StringBuilder sqlBuilder = new StringBuilder("SELECT ").append(KEY_ID).append(",")
-                .append(KEY_BODY).append(",").append(KEY_PRIORITY).append(",").append(" FROM ").append(TODO_TABLENAME);
+                .append(KEY_BODY).append(",").append(KEY_PRIORITY).append(" FROM ").append(TODO_TABLENAME);
         return sqlBuilder.toString();
     }
 

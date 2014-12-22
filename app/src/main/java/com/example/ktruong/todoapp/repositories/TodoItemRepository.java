@@ -9,4 +9,5 @@ public interface TodoItemRepository {
     void addItem(TodoItem todoItem);
     List<TodoItem> getAll();
     void save(List<TodoItem> items);
+    void delete(TodoItem removeItem);
 }
