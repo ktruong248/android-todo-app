@@ -5,14 +5,12 @@ This is pre-work for the Codepath Android development class.
 
 Completed user stories:
 
- * [x] Required: User can add an item to the todo list
- * [x] Required: User can delete an item from the todo list
- * [x] Required: User can edit an existing item from the todo list
- * [x] Required: When editing an item the edit field is in focus and the cursor is at the end of the text field.
+ * [x] Required: User can add/delete/edit an item to the todo list
+ * [x] Required: Send back Result on Save
  * [x] Required: Todo list items are persisted to disk and loaded when the app launches
  * [x] Optional: using SQLLite as data store
  * [x] Optional: using Itent Serializable interface to pass data between Activities i.e MainActivity vs EditItemActivity
- * [x] Optional: Empty items are not allowed to be aded to the todo list
+ * [x] Optional: Empty items are not allowed to be added to the todo list
  
 Notes:
 
