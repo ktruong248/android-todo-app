@@ -10,6 +10,6 @@ public interface TodoItemRepository {
     List<TodoItem> getAll();
     void save(List<TodoItem> items);
     void delete(TodoItem removeItem);
-    TodoItem findById(int id);
+    TodoItem findById(long id);
     void save(TodoItem todoItem);
 }

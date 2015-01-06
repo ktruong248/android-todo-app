@@ -1,21 +1,21 @@
 package com.example.ktruong.todoapp.entities;
 
 public class TodoItem {
-    private Integer id;
+    private long id;
     private String body;
     private int priority;
 
-    public TodoItem(Integer id, String body, int priority) {
+    public TodoItem(long id, String body, int priority) {
         this.id = id;
         this.body = body;
         this.priority = priority;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -42,16 +42,16 @@ public class TodoItem {
 
         TodoItem todoItem = (TodoItem) o;
 
+        if (id != todoItem.id) return false;
         if (priority != todoItem.priority) return false;
         if (body != null ? !body.equals(todoItem.body) : todoItem.body != null) return false;
-        if (id != null ? !id.equals(todoItem.id) : todoItem.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (body != null ? body.hashCode() : 0);
         result = 31 * result + priority;
         return result;

@@ -7,10 +7,10 @@ import com.example.ktruong.todoapp.entities.TodoItem;
  * simple to string view for the item
  */
 public class TodoItemView {
-    private final TodoItem todoItem;
+    private TodoItem todoItem;
 
     public TodoItemView(TodoItem todoItem) {
-        this.todoItem = todoItem;
+        this.todoItem = new TodoItem(todoItem.getId(), todoItem.getBody(), todoItem.getPriority());
     }
 
     public TodoItem getTodoItem() {

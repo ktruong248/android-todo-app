@@ -4,22 +4,24 @@ import java.io.Serializable;
 
 
 public class IntentEditTodoItemDTO implements Serializable {
-    private int itemId;
+    private static final long serialVersionUID = 122222222222L;
+
+    private long itemId;
     private String body;
 
     public IntentEditTodoItemDTO() {
     }
 
-    public IntentEditTodoItemDTO(int itemId, String body) {
+    public IntentEditTodoItemDTO(long itemId, String body) {
         this.itemId = itemId;
         this.body = body;
     }
 
-    public int getItemId() {
+    public long getItemId() {
         return itemId;
     }
 
-    public void setItemId(int itemId) {
+    public void setItemId(long itemId) {
         this.itemId = itemId;
     }
 

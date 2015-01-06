@@ -62,7 +62,7 @@ public class EditItemActivity extends Activity {
         EditText editText = (EditText) findViewById(R.id.editItemText);
         String updatedTextInput = editText.getText().toString();
         if (isNotEmpty(updatedTextInput)) {
-            int todoItemId = intentEditTodoItemDTO.getItemId();
+            long todoItemId = intentEditTodoItemDTO.getItemId();
             String beforeText = intentEditTodoItemDTO.getBody();
             Log.i(getClass().getSimpleName(), "onEditItem id " + todoItemId + " before text " + beforeText + " edited " + updatedTextInput);
 

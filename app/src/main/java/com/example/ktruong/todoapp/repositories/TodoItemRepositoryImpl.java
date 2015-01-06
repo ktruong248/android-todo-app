@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.example.ktruong.todoapp.entities.TodoAppConstants;
 import com.example.ktruong.todoapp.entities.TodoItem;
@@ -42,7 +43,8 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
             ContentValues values = new ContentValues();
             values.put(KEY_BODY, item.getBody());
             values.put(KEY_PRIORITY, item.getPriority());
-            db.insert(TODO_TABLENAME, null, values);
+            long insertRowId = db.insert(TODO_TABLENAME, null, values);
+            item.setId(insertRowId);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -82,7 +84,7 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
             try {
                 db.beginTransaction();
                 for (TodoItem item : items) {
-                    if (item.getId() != null) {
+                    if (item.getId() >= 0) {
                         TodoItem fetched = findById(item.getId());
                         if (fetched != null) {
                             fetched.setBody(item.getBody());
@@ -90,7 +92,7 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
                             updateTodoItem(fetched, db);
                         } else {
                             // need to create
-                            item.setId(null);
+                            item.setId(-1);
                             insert(item, db);
                         }
                     } else {
@@ -119,7 +121,7 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
     }
 
     @Override
-    public TodoItem findById(int itemId) {
+    public TodoItem findById(long itemId) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
             System.out.println("finding " + itemId);
@@ -149,14 +151,6 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
             CommonUtils.closeConnection(db);
         }
     }
-
-//    protected String buildSelectByIdSql(int id) {
-//        StringBuilder sqlBuilder = new StringBuilder("SELECT ").append(KEY_ID).append(",")
-//                .append(KEY_BODY).append(",").append(KEY_PRIORITY).append(" FROM ").append(TODO_TABLENAME)
-//                .append(" WHERE id = ").append(id);
-//
-//        return sqlBuilder.toString();
-//    }
 
     /**
      * convert db cursor to POJO expect the row in the following order
@@ -197,6 +191,7 @@ public class TodoItemRepositoryImpl extends SQLiteOpenHelper implements TodoItem
 
     protected void deleteTodoItem(TodoItem item, SQLiteDatabase db) {
         db.delete(TODO_TABLENAME, KEY_ID + " = ?", new String[]{String.valueOf(item.getId())});
+        Log.i(getClass().getSimpleName(), "deleted key_id " + item.getId());
     }
 
     protected String buildSelectAllSql() {
